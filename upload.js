@@ -2,41 +2,46 @@
 var AWS = require('aws-sdk');
 var uuid = require('uuid');
 var path = require('path');
+var fs = require('fs');
+
 var sts = new AWS.STS();
 var selectedSong;
 var s3;
-var fs = require('fs');
 
+var filesLeft = 0;
+
+
+//***************Assuming the IAM S3AccessRole**************
 const params = {
     RoleArn: 'arn:aws:iam::968506304545:role/S3AccessRole',
     RoleSessionName: 'roleSession1'
 };
 async function assumeIAMRole() {
     try {
-        const assumeRoleStep1 = await sts.assumeRole(params).promise();
+        const assumedRole = await sts.assumeRole(params).promise();
         const accessParams = {
-            accessKeyId: assumeRoleStep1.Credentials.AccessKeyId,
-            secretAccessKey: assumeRoleStep1.Credentials.SecretAccessKey,
-            sessionToken: assumeRoleStep1.Credentials.SessionToken
+            accessKeyId: assumedRole.Credentials.AccessKeyId,
+            secretAccessKey: assumedRole.Credentials.SecretAccessKey,
+            sessionToken: assumedRole.Credentials.SessionToken
         };
         const innerS3 = await new AWS.S3(accessParams);
         //const sts2 = new AWS.STS(accessParams);
         s3 = innerS3;
     }
-    catch (rejVal){
+    catch (err){
         console.log('Cannot assume role');
-        console.log(rejVal);
+        console.log(err);
     }
 }
 assumeIAMRole();
 
-
+/***************************************************************
+******************Add Song Section******************************/
 let pickSongButton = document.getElementById("pick-song-button");
 let fileInput = document.getElementById("file-input");
 pickSongButton.addEventListener('click', (ev) => {
 	fileInput.click();
 });
-
 
 let songPath = document.getElementById("song-path");
 let songName = document.getElementById("song-name");
@@ -67,7 +72,6 @@ function uploadSong(source, name, album, artist) {
     else {
         myKey += 'No Artist/';
     }
-
     if (album.length > 1) {
         myKey += album + '/';
     }
@@ -82,7 +86,8 @@ function uploadSong(source, name, album, artist) {
     });
 
     console.log(myKey);
-    snackbarToast('Begginning to upload: ' + myKey);
+    snackbarToast('Beginning to upload: ' + myKey);
+    setTimeout(showLoading, 2750);
     s3.upload({
         Bucket: "aws-testbucket16",
         Key: myKey,
@@ -93,10 +98,13 @@ function uploadSong(source, name, album, artist) {
             console.log('Upload error', err.message);  
             return alert('There was an error uploading: ' + myKey);
         }
+        hideLoading();
         snackbarToast('Successfully uploaded: ' + myKey);
       });
 }
 
+/***************************************************************
+******************Add Album Section*****************************/
 let pickAlbumButton = document.getElementById("pick-album-button");
 let alFileInput = document.getElementById("al-file-input");
 pickAlbumButton.addEventListener('click', (ev) => {
@@ -132,7 +140,6 @@ function uploadAlbum(albumPath, album, artist) {
 
         for (const fileName of files) {
             var filePath = path.join(albumPath, fileName);
-
             //Skip sub-directories
             if (fs.lstatSync(filePath).isDirectory()) {
                 continue;
@@ -143,10 +150,11 @@ function uploadAlbum(albumPath, album, artist) {
 
             uploadSong(filePath, fileName, album, artist);
         }
-        
     });
 }
 
+/***************************************************************
+******************Add Artist Section****************************/
 let pickArtistButton = document.getElementById("pick-artist-button");
 let artFileInput = document.getElementById("art-file-input");
 pickArtistButton.addEventListener('click', (ev) => {
@@ -186,7 +194,7 @@ function uploadArtist(artistPath, artist) {
             if (fs.lstatSync(filePath).isDirectory()) {
                 uploadAlbum(filePath, pathName, artist);
             }
-            //If not in an album
+            //If not in an album but is an mp3
             if (pathName.slice(-4) == '.mp3') {
                 uploadSong(filePath, pathName, 'No Album', artist);
             }
@@ -196,8 +204,24 @@ function uploadArtist(artistPath, artist) {
 
 
 function snackbarToast(toast) {
-	var snackbar = document.getElementById('note-snackbar');
+	var snackbar = document.getElementById('song-snackbar');
 	snackbar.MaterialSnackbar.showSnackbar({
 		message: toast
 	});
+}
+
+function showLoading(toast) {
+    filesLeft += 1;
+	var snackbar = document.getElementById('upload-snackbar');
+	snackbar.classList.add("mdl-snackbar--active");
+}
+
+function hideLoading(toast) {
+    if (filesLeft <= 1) {
+        var snackbar = document.getElementById('upload-snackbar');
+	    snackbar.classList.remove("mdl-snackbar--active");
+    }
+    if (filesLeft > 0) {
+        filesLeft -= 1;
+    }
 }

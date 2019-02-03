@@ -78,6 +78,7 @@
                   Select an Album folder...
                 </button>
               </div>
+              <p></p>
               <div>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="al-name-textfield">
                   <label class="mdl-textfield__label" id="album-name-label" for="album-name">Enter album name</label>
@@ -110,6 +111,7 @@
                       Select an Artist folder...
                     </button>
                   </div>
+                  <p></p>
                   <div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="art-name-textfield">
                       <label class="mdl-textfield__label" id="artist-name-label" for="artist-name">Enter artist name</label>
@@ -126,7 +128,13 @@
     </main>
     </div>
 
-    <div id="note-snackbar" class="mdl-snackbar mdl-js-snackbar">
+    <div id="upload-snackbar" class="mdl-snackbar mdl-js-snackbar">
+        <div class="mdl-snackbar__text">Uploading...</div>
+        <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="position: absolute"></div>
+        <button type="button" class="mdl-snackbar__action"></button>
+    </div>
+
+    <div id="song-snackbar" class="mdl-snackbar mdl-js-snackbar">
         <div class="mdl-snackbar__text"></div>
         <button type="button" class="mdl-snackbar__action"></button>
     </div>
