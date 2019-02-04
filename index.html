@@ -66,64 +66,58 @@
       </section>
       <section class="mdl-layout__tab-panel" id="fixed-tab-2">
         <div class="page-content">
+            <h2 class="tab-title">Upload an Album</h2>
+            <div id="album-form">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="album-textfield">
+                <label class="mdl-textfield__label" id="album-label" for="album-path">Enter Album path...</label>
+                <input class="mdl-textfield__input" type="text" id="album-path"></input>
+              </div>
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pick-album-button">
+                <input id="al-file-input" type="file" style="display: none" webkitdirectory directory />
+                Select an Album folder...
+              </button>
+            </div>
+            <p></p>
+            <div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="al-name-textfield">
+                <label class="mdl-textfield__label" id="album-name-label" for="album-name">Enter album name</label>
+                <input class="mdl-textfield__input" type="text" id="album-name"></input>
+              </div>
+              <p></p>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <label class="mdl-textfield__label" id="album-artist-label" for="album-artist">Enter artist name (optional)</label>
+                <input class="mdl-textfield__input" type="text" id="album-artist"></input>
+              </div>
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-album-button">
+                Upload Album
+              </button>
+            </div>
+          </div>
+      </section>
+      <section class="mdl-layout__tab-panel" id="fixed-tab-3">
           <div class="page-content">
-              <h2 class="tab-title">Upload an Album</h2>
+              <h2 class="tab-title">Upload an Artist</h2>
               <div id="album-form">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="album-textfield">
-                  <label class="mdl-textfield__label" id="album-label" for="album-path">Enter Album path...</label>
-                  <input class="mdl-textfield__input" type="text" id="album-path"></input>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="artist-textfield">
+                  <label class="mdl-textfield__label" id="artist-label" for="artist-path">Enter Artist path...</label>
+                  <input class="mdl-textfield__input" type="text" id="artist-path"></input>
                 </div>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pick-album-button">
-                  <input id="al-file-input" type="file" style="display: none" webkitdirectory directory />
-                  Select an Album folder...
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pick-artist-button">
+                  <input id="art-file-input" type="file" style="display: none" webkitdirectory directory />
+                  Select an Artist folder...
                 </button>
               </div>
               <p></p>
               <div>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="al-name-textfield">
-                  <label class="mdl-textfield__label" id="album-name-label" for="album-name">Enter album name</label>
-                  <input class="mdl-textfield__input" type="text" id="album-name"></input>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="art-name-textfield">
+                  <label class="mdl-textfield__label" id="artist-name-label" for="artist-name">Enter artist name</label>
+                  <input class="mdl-textfield__input" type="text" id="artist-name"></input>
                 </div>
-                <p></p>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <label class="mdl-textfield__label" id="album-artist-label" for="album-artist">Enter artist name (optional)</label>
-                  <input class="mdl-textfield__input" type="text" id="album-artist"></input>
-                </div>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-album-button">
-                  Upload Album
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-artist-button">
+                  Upload Artist
                 </button>
               </div>
             </div>
-        </div>
-      </section>
-      <section class="mdl-layout__tab-panel" id="fixed-tab-3">
-        <div class="page-content">
-            <div class="page-content">
-              <div class="page-content">
-                  <h2 class="tab-title">Upload an Artist</h2>
-                  <div id="album-form">
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="artist-textfield">
-                      <label class="mdl-textfield__label" id="artist-label" for="artist-path">Enter Artist path...</label>
-                      <input class="mdl-textfield__input" type="text" id="artist-path"></input>
-                    </div>
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pick-artist-button">
-                      <input id="art-file-input" type="file" style="display: none" webkitdirectory directory />
-                      Select an Artist folder...
-                    </button>
-                  </div>
-                  <p></p>
-                  <div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="art-name-textfield">
-                      <label class="mdl-textfield__label" id="artist-name-label" for="artist-name">Enter artist name</label>
-                      <input class="mdl-textfield__input" type="text" id="artist-name"></input>
-                    </div>
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-artist-button">
-                      Upload Artist
-                    </button>
-                  </div>
-                </div>
-            </div>
-        </div>
       </section>
     </main>
     </div>
