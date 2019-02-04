@@ -6,11 +6,11 @@ The goal of this project is to make a private online music streaming platform, f
 Navigate to the directory where you wish to install the app using a CLI.
 ```
 $ git clone https://github.com/riemeri/AWS-Music-Project
-$ cd electron-api-demos
+$ cd AWS-Music-Project
 $ npm install
 ```
 ### Using
 To run the app, when in its directory, simply enter:
 ```
-$ npm run
+$ npm start
 ```
