@@ -1,0 +1,20 @@
+{
+  "name": "aws-music-uploader",
+  "version": "1.0.0",
+  "description": "A minimal Electron application to upload muisc",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/",
+  "keywords": [],
+  "author": "riemeri",
+  "devDependencies": {
+    "electron": "^4.0.3"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.395.0",
+    "http": "0.0.0",
+    "uuid": "^3.3.2"
+  }
+}

@@ -2,9 +2,140 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Music Uploader</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-blue.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:700i" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
   </head>
   <body>
+    <!-- Simple header with fixed tabs. -->
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+      <!-- Title -->
+        <span class="mdl-layout-title">AWS Music Uploader</span>
+      </div>
+      <!-- Tabs -->
+      <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+        <a href="#fixed-tab-1" class="mdl-layout__tab is-active">Upload Song</a>
+        <a href="#fixed-tab-2" class="mdl-layout__tab">Upload Album</a>
+        <a href="#fixed-tab-3" class="mdl-layout__tab">Upload Artist</a>
+      </div>
+    </header>
+    <!--<div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">Menu</span>
+    </div>-->
+    <main class="mdl-layout__content">
+      
+      <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
+        <div class="page-content">
+          <h2 class="tab-title">Upload a Song</h2>
+          <div id="song-form">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="song-textfield">
+              <label class="mdl-textfield__label" id="song-label" for="song-path">Enter file path...</label>
+              <input class="mdl-textfield__input" type="text" id="song-path" name="song-path"></input>
+            </div>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pick-song-button">
+              <input id="file-input" type="file" style="display: none" accept=".mp3" />
+              Select mp3 file...
+            </button>
+          </div>
+          <p></p>
+          <div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="name-textfield">
+              <label class="mdl-textfield__label" id="song-name-label" for="song-name">Enter song name</label>
+              <input class="mdl-textfield__input" type="text" id="song-name"></input>
+            </div>
+            <p></p>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <label class="mdl-textfield__label" id="song-album-label" for="song-album">Enter album name (optional)</label>
+              <input class="mdl-textfield__input" type="text" id="song-album"></input>
+            </div>
+            <p></p>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <label class="mdl-textfield__label" id="song-artist-label" for="song-artist">Enter artist name (optional)</label>
+              <input class="mdl-textfield__input" type="text" id="song-artist"></input>
+            </div>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-song-button">
+              Upload Song
+            </button>
+          </div>
+        </div>
+      </section>
 
+      <section class="mdl-layout__tab-panel" id="fixed-tab-2">
+        <div class="page-content">
+            <h2 class="tab-title">Upload an Album</h2>
+            <div id="album-form">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="album-textfield">
+                <label class="mdl-textfield__label" id="album-label" for="album-path">Enter Album path...</label>
+                <input class="mdl-textfield__input" type="text" id="album-path"></input>
+              </div>
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pick-album-button">
+                <input id="al-file-input" type="file" style="display: none" webkitdirectory directory />
+                Select Album folder...
+              </button>
+            </div>
+            <p></p>
+            <div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="al-name-textfield">
+                <label class="mdl-textfield__label" id="album-name-label" for="album-name">Enter album name</label>
+                <input class="mdl-textfield__input" type="text" id="album-name"></input>
+              </div>
+              <p></p>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <label class="mdl-textfield__label" id="album-artist-label" for="album-artist">Enter artist name (optional)</label>
+                <input class="mdl-textfield__input" type="text" id="album-artist"></input>
+              </div>
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-album-button">
+                Upload Album
+              </button>
+            </div>
+          </div>
+      </section>
+
+      <section class="mdl-layout__tab-panel" id="fixed-tab-3">
+          <div class="page-content">
+              <h2 class="tab-title">Upload an Artist</h2>
+              <div id="album-form">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="artist-textfield">
+                  <label class="mdl-textfield__label" id="artist-label" for="artist-path">Enter Artist path...</label>
+                  <input class="mdl-textfield__input" type="text" id="artist-path"></input>
+                </div>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pick-artist-button">
+                  <input id="art-file-input" type="file" style="display: none" webkitdirectory directory />
+                  Select Artist folder...
+                </button>
+              </div>
+              <p></p>
+              <div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="art-name-textfield">
+                  <label class="mdl-textfield__label" id="artist-name-label" for="artist-name">Enter artist name</label>
+                  <input class="mdl-textfield__input" type="text" id="artist-name"></input>
+                </div>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-artist-button">
+                  Upload Artist
+                </button>
+              </div>
+            </div>
+      </section>
+    </main>
+    </div>
+
+    <div id="upload-snackbar" class="mdl-snackbar mdl-js-snackbar">
+        <div class="mdl-snackbar__text">Uploading...</div>
+        <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="position: absolute"></div>
+        <button type="button" class="mdl-snackbar__action"></button>
+    </div>
+
+    <div id="song-snackbar" class="mdl-snackbar mdl-js-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button type="button" class="mdl-snackbar__action"></button>
+    </div>
+
+    <script src="upload.js"></script>
   </body>
 </html>
