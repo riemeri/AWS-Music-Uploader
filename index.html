@@ -5,7 +5,7 @@
     <title>Music Uploader</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-blue.min.css" />
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:700i" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
@@ -25,10 +25,11 @@
         <a href="#fixed-tab-3" class="mdl-layout__tab">Upload Artist</a>
       </div>
     </header>
-    <div class="mdl-layout__drawer">
+    <!--<div class="mdl-layout__drawer">
       <span class="mdl-layout-title">Menu</span>
-    </div>
+    </div>-->
     <main class="mdl-layout__content">
+      
       <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
         <div class="page-content">
           <h2 class="tab-title">Upload a Song</h2>
@@ -38,7 +39,7 @@
               <input class="mdl-textfield__input" type="text" id="song-path" name="song-path"></input>
             </div>
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pick-song-button">
-              <input id="file-input" type="file" style="display: none" accept=".mp3"/>
+              <input id="file-input" type="file" style="display: none" accept=".mp3" />
               Select mp3 file...
             </button>
           </div>
@@ -64,6 +65,7 @@
           </div>
         </div>
       </section>
+
       <section class="mdl-layout__tab-panel" id="fixed-tab-2">
         <div class="page-content">
             <h2 class="tab-title">Upload an Album</h2>
@@ -74,7 +76,7 @@
               </div>
               <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pick-album-button">
                 <input id="al-file-input" type="file" style="display: none" webkitdirectory directory />
-                Select an Album folder...
+                Select Album folder...
               </button>
             </div>
             <p></p>
@@ -94,6 +96,7 @@
             </div>
           </div>
       </section>
+
       <section class="mdl-layout__tab-panel" id="fixed-tab-3">
           <div class="page-content">
               <h2 class="tab-title">Upload an Artist</h2>
@@ -104,7 +107,7 @@
                 </div>
                 <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="pick-artist-button">
                   <input id="art-file-input" type="file" style="display: none" webkitdirectory directory />
-                  Select an Artist folder...
+                  Select Artist folder...
                 </button>
               </div>
               <p></p>

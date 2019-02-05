@@ -60,7 +60,15 @@ fileInput.addEventListener('change', (ev) => {
 
 let addSongButton = document.getElementById("add-song-button");
 addSongButton.addEventListener('click', (ev) => {
-    uploadSong(songPath.value, songName.value, songAlbum.value, songArtist.value);
+    if (songPath.value.slice(-4) == '.mp3') {
+        uploadSong(songPath.value, songName.value, songAlbum.value, songArtist.value);
+    }
+    else if(songPath.value.length <= 1) {
+        snackbarToast("Error: No file path provided");
+    }
+    else {
+        snackbarToast("Error: No .mp3 file at provided path");
+    }
 });
 
 
@@ -127,14 +135,20 @@ alFileInput.addEventListener('change', (ev) => {
 
 let addAlbumButton = document.getElementById("add-album-button");
 addAlbumButton.addEventListener('click', (ev) => {
-    uploadAlbum(albumPath.value, albumName.value, albumArtist.value);
+    if (path.extname(albumPath.value) == "") {
+        uploadAlbum(albumPath.value, albumName.value, albumArtist.value);
+    }
+    else {
+        snackbarToast("Error: Invalid album path provided")
+    }
+    
 });
 
 function uploadAlbum(albumPath, album, artist) {
     fs.readdir(albumPath, (err, files) => {
         if(!files || files.length === 0) {
-            console.log(`provided folder '${distFolderPath}' is empty or does not exist.`);
-            snackbarToast("Folder is empty or doesn't exist");
+            console.log(`provided folder '${albumPath}' is empty or does not exist.`);
+            snackbarToast("Error: Folder is empty or doesn't exist");
             return;
         }
 
@@ -182,8 +196,8 @@ addArtistButton.addEventListener('click', (ev) => {
 function uploadArtist(artistPath, artist) {
     fs.readdir(artistPath, (err, files) => {
         if(!files || files.length === 0) {
-            console.log(`provided folder '${distFolderPath}' is empty or does not exist.`);
-            snackbarToast("Folder is empty or doesn't exist");
+            console.log(`provided folder '${artistPath}' is empty or does not exist.`);
+            snackbarToast("Error: Folder is empty or doesn't exist");
             return;
         }
 
