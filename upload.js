@@ -91,6 +91,7 @@ function uploadSong(source, name, album, artist) {
     var fileStream = fs.createReadStream(source);
     fileStream.on('error', function(err) {
         console.log('File Error', err);
+        snackbarToast('Error getting file: ' + source);
     });
 
     console.log(myKey);
