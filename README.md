@@ -10,7 +10,7 @@ Note: The Music Uploader requires a current version of Node.js to be installed.
 Navigate to the directory where you wish to install the app using a CLI.
 Then, enter these commands: 
 ```
-$ git clone https://github.com/riemeri/AWS-Music-Project
+$ git clone https://github.com/riemeri/AWS-Music-Uploader
 $ cd AWS-Music-Project
 $ npm install
 ```
