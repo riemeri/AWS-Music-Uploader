@@ -4,11 +4,16 @@ var uuid = require('uuid');
 var path = require('path');
 var fs = require('fs');
 
+//import DBAccess from 'dynamo-music.js';
+var dynamoMusic = require('./dynamo-music');
+
 var sts = new AWS.STS();
 var selectedSong;
 var s3;
 
 var filesLeft = 0;
+
+var DBAccess = new dynamoMusic.DBAccess();
 
 
 //***************Assuming the IAM S3AccessRole**************
@@ -25,6 +30,7 @@ async function assumeIAMRole() {
             sessionToken: assumedRole.Credentials.SessionToken
         };
         const innerS3 = await new AWS.S3(accessParams);
+        DBAccess.setAccessParams(accessParams);
         //const sts2 = new AWS.STS(accessParams);
         s3 = innerS3;
     }
@@ -47,6 +53,7 @@ let songPath = document.getElementById("song-path");
 let songName = document.getElementById("song-name");
 let songAlbum = document.getElementById("song-album");
 let songArtist = document.getElementById("song-artist");
+let songGenre = document.getElementById('song-genre');
 let songTextfield = document.getElementById("song-textfield");
 let nameTextfield = document.getElementById("name-textfield");
 
@@ -61,7 +68,8 @@ fileInput.addEventListener('change', (ev) => {
 let addSongButton = document.getElementById("add-song-button");
 addSongButton.addEventListener('click', (ev) => {
     if (songPath.value.slice(-4) == '.mp3') {
-        uploadSong(songPath.value, songName.value, songAlbum.value, songArtist.value);
+        uploadSong(songPath.value, songName.value, songAlbum.value, 
+            songArtist.value, songGenre.value, true);
     }
     else if(songPath.value.length <= 1) {
         snackbarToast("Error: No file path provided");
@@ -72,19 +80,24 @@ addSongButton.addEventListener('click', (ev) => {
 });
 
 
-function uploadSong(source, name, album, artist) {    
+function uploadSong(source, name, album, artist, genre, single) {    
     var myKey = 'Music/';
     if (artist.length > 1) {
         myKey += artist + '/';
     }
     else {
-        myKey += 'No Artist/';
+        myKey += 'No Artist/'
+        artist = 'No Artist';
     }
     if (album.length > 1) {
         myKey += album + '/';
     }
     else {
         myKey += 'No Album/';
+        album = 'No Album'
+    }
+    if (genre.length <= 1) {
+        genre = "No Genre";
     }
     myKey += name;
 
@@ -107,9 +120,53 @@ function uploadSong(source, name, album, artist) {
             console.log('Upload error', err.message);  
             return alert('There was an error uploading: ' + myKey);
         }
+
+        DBAccess.addSong(path.basename(name, '.mp3'), album, artist, genre, myKey);
+        if (single) {
+            DBAccess.checkAlbum(album, artist).then((result) => {
+                if (result.Count < 1) {
+                    DBAccess.addAlbum(album, artist, genre);
+                    snackbarToast("Added Album: " + album);
+                }
+            });
+            DBAccess.checkArtist(artist, genre).then((result) => {
+                if (result.Count < 1) {
+                    DBAccess.addArtist(artist, genre);
+                    snackbarToast("Added Artist: " + artist);
+                }
+            });
+            DBAccess.checkGenre(genre).then((result) => {
+                if (result.Count < 1) {
+                    DBAccess.addGenre(genre);
+                    snackbarToast("Added Genre: " + genre);
+                }
+            });
+        }  
         hideLoading();
         snackbarToast('Successfully uploaded: ' + myKey);
       });
+      DBAccess.addSong(path.basename(name, '.mp3'), album, artist, genre, myKey);
+        if (single) {
+            DBAccess.checkAlbum(album, artist).then((result) => {
+                if (result.Count < 1) {
+                    DBAccess.addAlbum(album, artist, genre);
+                    snackbarToast("Added Album: " + album);
+                }
+            });
+            DBAccess.checkArtist(artist, genre).then((result) => {
+                if (result.Count < 1) {
+                    DBAccess.addArtist(artist, genre);
+                    snackbarToast("Added Artist: " + artist);
+                }
+            });
+            DBAccess.checkGenre(genre).then((result) => {
+                if (result.Count < 1) {
+                    DBAccess.addGenre(genre);
+                    snackbarToast("Added Genre: " + genre);
+                }
+            });
+        } 
+      
 }
 
 /***************************************************************
@@ -123,6 +180,7 @@ pickAlbumButton.addEventListener('click', (ev) => {
 let albumPath = document.getElementById("album-path");
 let albumName = document.getElementById("album-name");
 let albumArtist = document.getElementById("album-artist");
+let albumGenre = document.getElementById("album-genre");
 let albumTextfield = document.getElementById("album-textfield");
 let alNameTextfield = document.getElementById("al-name-textfield");
 
@@ -137,7 +195,8 @@ alFileInput.addEventListener('change', (ev) => {
 let addAlbumButton = document.getElementById("add-album-button");
 addAlbumButton.addEventListener('click', (ev) => {
     if (path.extname(albumPath.value) == "") {
-        uploadAlbum(albumPath.value, albumName.value, albumArtist.value);
+        uploadAlbum(albumPath.value, albumName.value, 
+            albumArtist.value, albumGenre.value, true);
     }
     else {
         snackbarToast("Error: Invalid album path provided")
@@ -145,12 +204,18 @@ addAlbumButton.addEventListener('click', (ev) => {
     
 });
 
-function uploadAlbum(albumPath, album, artist) {
+function uploadAlbum(albumPath, album, artist, genre, single) {
     fs.readdir(albumPath, (err, files) => {
         if(!files || files.length === 0) {
             console.log(`provided folder '${albumPath}' is empty or does not exist.`);
             snackbarToast("Error: Folder is empty or doesn't exist");
             return;
+        }
+        if (artist.length <= 1) {
+            artist = 'No Artist';
+        }
+        if (genre.length <= 1) {
+            artist = 'No Genre';
         }
 
         for (const fileName of files) {
@@ -163,7 +228,26 @@ function uploadAlbum(albumPath, album, artist) {
                 continue;
             }
 
-            uploadSong(filePath, fileName, album, artist);
+            uploadSong(filePath, fileName, album, artist, genre, false);
+        }
+        DBAccess.addAlbum(album, artist, genre);
+        if (single) {
+            DBAccess.checkArtist(artist, genre).then((result) => {
+                console.log("Check Artist: ");
+                console.log(result);
+                if (result.Count < 1) {
+                    DBAccess.addArtist(artist, genre);
+                    snackbarToast("Added Artist: " + artist);
+                }
+            });
+            DBAccess.checkGenre(genre).then((result) => {
+                console.log("Check Genre: ");
+                console.log(result);
+                if (result.Count < 1) {
+                    DBAccess.addGenre(genre);
+                    snackbarToast("Added Genre: " + genre);
+                }
+            });
         }
     });
 }
@@ -178,6 +262,7 @@ pickArtistButton.addEventListener('click', (ev) => {
 
 let artistPath = document.getElementById("artist-path");
 let artistName = document.getElementById("artist-name");
+let artistGenre = document.getElementById("artist-genre");
 let artistTextfield = document.getElementById("artist-textfield");
 let artNameTextfield = document.getElementById("art-name-textfield");
 
@@ -191,15 +276,18 @@ artFileInput.addEventListener('change', (ev) => {
 
 let addArtistButton = document.getElementById("add-artist-button");
 addArtistButton.addEventListener('click', (ev) => {
-    uploadArtist(artistPath.value, artistName.value);
+    uploadArtist(artistPath.value, artistName.value, artistGenre.value);
 });
 
-function uploadArtist(artistPath, artist) {
+function uploadArtist(artistPath, artist, genre) {
     fs.readdir(artistPath, (err, files) => {
         if(!files || files.length === 0) {
             console.log(`provided folder '${artistPath}' is empty or does not exist.`);
             snackbarToast("Error: Folder is empty or doesn't exist");
             return;
+        }
+        if (genre.length <= 1) {
+            artist = 'No Genre';
         }
 
         for (const pathName of files) {
@@ -207,16 +295,25 @@ function uploadArtist(artistPath, artist) {
 
             //If pathName represents an album/folder
             if (fs.lstatSync(filePath).isDirectory()) {
-                uploadAlbum(filePath, pathName, artist);
+                uploadAlbum(filePath, pathName, artist, genre, false);
             }
             //If not in an album but is an mp3
             if (pathName.slice(-4) == '.mp3') {
-                uploadSong(filePath, pathName, 'No Album', artist);
+                uploadSong(filePath, pathName, 'No Album', artist, genre, true);
             }
         }
+
+        DBAccess.addArtist(artist, genre);
+        DBAccess.checkGenre(genre).then((result) => {
+            console.log("Check Genre: ");
+            console.log(result);
+            if (result.Count < 1) {
+                DBAccess.addGenre(genre);
+                snackbarToast("Added Genre: " + genre);
+            }
+        });
     });
 }
-
 
 function snackbarToast(toast) {
 	var snackbar = document.getElementById('song-snackbar');

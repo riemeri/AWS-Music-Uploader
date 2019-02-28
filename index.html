@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:700i" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <!--<script src="https://sdk.amazonaws.com/js/aws-sdk-2.407.0.min.js"></script>-->
   </head>
   <body>
     <!-- Simple header with fixed tabs. -->
@@ -59,6 +60,11 @@
               <label class="mdl-textfield__label" id="song-artist-label" for="song-artist">Enter artist name (optional)</label>
               <input class="mdl-textfield__input" type="text" id="song-artist"></input>
             </div>
+            <p></p>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <label class="mdl-textfield__label" id="song-genre-label" for="song-genre">Enter Genre (optional)</label>
+              <input class="mdl-textfield__input" type="text" id="song-genre"></input>
+            </div>
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-song-button">
               Upload Song
             </button>
@@ -90,6 +96,11 @@
                 <label class="mdl-textfield__label" id="album-artist-label" for="album-artist">Enter artist name (optional)</label>
                 <input class="mdl-textfield__input" type="text" id="album-artist"></input>
               </div>
+              <p></p>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <label class="mdl-textfield__label" id="album-genre-label" for="album-genre">Enter Genre (optional)</label>
+                <input class="mdl-textfield__input" type="text" id="album-genre"></input>
+              </div>
               <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-album-button">
                 Upload Album
               </button>
@@ -115,6 +126,11 @@
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="art-name-textfield">
                   <label class="mdl-textfield__label" id="artist-name-label" for="artist-name">Enter artist name</label>
                   <input class="mdl-textfield__input" type="text" id="artist-name"></input>
+                </div>
+                <p></p>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <label class="mdl-textfield__label" id="artist-genre-label" for="artist-genre">Enter Genre (optional)</label>
+                  <input class="mdl-textfield__input" type="text" id="artist-genre"></input>
                 </div>
                 <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-artist-button">
                   Upload Artist

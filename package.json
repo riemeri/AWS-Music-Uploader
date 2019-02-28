@@ -10,7 +10,9 @@
   "keywords": [],
   "author": "riemeri",
   "devDependencies": {
-    "electron": "^4.0.3"
+    "electron": "^4.0.3",
+    "electron-packager": "^13.0.1",
+    "electron-winstaller": "^2.7.0"
   },
   "dependencies": {
     "aws-sdk": "^2.395.0",
